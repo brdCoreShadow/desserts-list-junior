@@ -2,16 +2,19 @@ import { IItem } from "@/utils/types";
 import * as SC from "./ItemStyled";
 
 const Item: React.FC<IItem> = ({ name, category, imageUrl, price }) => {
-  return (
+  
+  const formattedPrice = price.toFixed(2);
+  
+    return (
     <SC.ItemStyled>
-      <div>
+      <SC.PicThumb>
         <img src={imageUrl} alt={name} />
-      </div>
-      <button>Add to Cart</button>
+      <SC.Button>Add to Cart</SC.Button>
+      </SC.PicThumb>
       <div>
-        <p>{category}</p>
-        <h3>{name}</h3>
-        <p>{price}</p>
+        <SC.Category>{category}</SC.Category>
+        <SC.Name>{name}</SC.Name>
+        <SC.Price>$ {formattedPrice}</SC.Price>
       </div>
     </SC.ItemStyled>
   );
