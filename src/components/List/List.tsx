@@ -1,17 +1,22 @@
-import { mockData } from "@/data/mockData";
 import * as SC from "./ListStyled";
 import Item from "../Item/Item";
+import { IItem } from "@/utils/types";
 
-const List: React.FC = () => {
+interface ListProps {
+  desserts: IItem[] | null;
+}
+
+const List: React.FC<ListProps> = ({desserts}) => {
   return (
     <SC.ListStyled>
-      {mockData.map(({ id, name, category, price, imageUrl }) => (
+      {desserts?.map(({ dessert_id, name, category, price, imageUrl }) => (
         <Item
-          key={id}
+          key={dessert_id}
           name={name}
           category={category}
           price={price}
           imageUrl={imageUrl}
+          
         />
       ))}
     </SC.ListStyled>
