@@ -4,9 +4,9 @@ import { IChild } from "@/utils/types";
 
 const SharedLayout:React.FC<IChild> = ({children}) => {
     return ( 
-        <SC.SharedLayout>
+        <SC.SharedLayoutCon>
             {children}
-        </SC.SharedLayout>
+        </SC.SharedLayoutCon>
      );
 }
  

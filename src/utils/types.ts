@@ -8,3 +8,9 @@ export interface IItem {
     price:number,
     imageUrl:string
 }
+
+export interface IPagination {
+    next:()=>void,
+    prev:()=>void,
+    page:number,
+}
