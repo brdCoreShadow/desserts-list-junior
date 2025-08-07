@@ -9,7 +9,6 @@ export const getAll = async (
   args: IFetchDesserts
 ): Promise<AxiosResponse | undefined> => {
   const { page } = args;
-console.log(page, "test page");
 
   try {
     const response = await instance.get("/", {

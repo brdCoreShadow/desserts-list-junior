@@ -1,7 +1,7 @@
 import { IItem } from "@/utils/types";
 import * as SC from "./ItemStyled";
 
-const Item: React.FC<Partial<IItem>> = ({ name, category, imageUrl, price }) => {
+const Item: React.FC<Partial<IItem>> = ({ name, category, image_url, price }) => {
   
   const formattedPrice =
     typeof price === "number" ? price.toFixed(2) : Number(price).toFixed(2);
@@ -9,7 +9,7 @@ const Item: React.FC<Partial<IItem>> = ({ name, category, imageUrl, price }) => 
     return (
     <SC.ItemStyled >
       <SC.PicThumb>
-        <img src={imageUrl} alt={name} />
+        <img src={image_url} alt={name} />
       <SC.Button>Add to Cart</SC.Button>
       </SC.PicThumb>
       <div>

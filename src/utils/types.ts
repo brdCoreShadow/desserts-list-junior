@@ -7,7 +7,7 @@ export interface IItem {
     name:string,
     category:string,
     price:number,
-    imageUrl:string
+    image_url:string
 }
 
 export interface IPagination {

@@ -9,13 +9,13 @@ interface ListProps {
 const List: React.FC<ListProps> = ({desserts}) => {
   return (
     <SC.ListStyled>
-      {desserts?.map(({ dessert_id, name, category, price, imageUrl }) => (
+      {desserts?.map(({ dessert_id, name, category, price, image_url }) => (
         <Item
           key={dessert_id}
           name={name}
           category={category}
           price={price}
-          imageUrl={imageUrl}
+          image_url={image_url}
           
         />
       ))}

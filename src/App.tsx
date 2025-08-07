@@ -24,16 +24,14 @@ export const App: React.FC = () => {
       setIsLoading(true);
       const response: AxiosResponse | undefined = await getAll({ page });
       if (response?.data) {
-        setDesserts(response.data.data); // backend returns { data: rows, total, page, pages }
+        setDesserts(response.data.data); 
         setTotalPages(response.data.pages);
       }
-      setIsLoading(false); // ✅ only stop loading after data is processed
+      setIsLoading(false); 
     };
 
     fetchDesserts();
   }, [page]);
-
-  console.log(isLoading);
 
   return (
     <SC.AppStyled>
