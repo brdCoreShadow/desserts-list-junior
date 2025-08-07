@@ -9,10 +9,13 @@ import SharedLayout from "./layouts/SharedLayout/SharedLayout";
 import { getAll } from "./utils/services";
 import { AxiosResponse } from "axios";
 import Loading from "./components/Loading/Loading";
+import Cart from "./components/Cart/Cart";
+import { IItem } from "./utils/types";
 
 export const App: React.FC = () => {
-  const [page, setPage] = useState(1);
+  const [page, setPage] = useState<number>(1);
   const [desserts, setDesserts] = useState(null);
+  const [orders, setOrders] = useState<Partial<IItem[]> | null>()
   const [totalPages, setTotalPages] = useState<number>(1);
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
@@ -33,6 +36,11 @@ export const App: React.FC = () => {
     fetchDesserts();
   }, [page]);
 
+
+  const handleOrder = (id:number, name:string, price:number) => {
+    setOrders((prev) => [...prev, { id, name, price }]);
+  };
+
   return (
     <SC.AppStyled>
       <Header>
@@ -40,12 +48,13 @@ export const App: React.FC = () => {
       </Header>
       <SharedLayout>
         {isLoading && <Loading />}
-        {desserts && <List desserts={desserts} />}
+        {desserts && <List desserts={desserts} handleOrder={handleOrder}/>}
         {!isLoading && <PaginationDashboard
           next={nextPageHandler}
           prev={prevPageHandler}
           page={page}
         />}
+       {!isLoading && <Cart orders={orders}/>}
       </SharedLayout>
     </SC.AppStyled>
   );
