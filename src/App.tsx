@@ -10,14 +10,15 @@ import { getAll } from "./utils/services";
 import { AxiosResponse } from "axios";
 import Loading from "./components/Loading/Loading";
 import Cart from "./components/Cart/Cart";
-import { IItem } from "./utils/types";
+import { CartOrderSummary, IItem } from "./utils/types";
 
 export const App: React.FC = () => {
   const [page, setPage] = useState<number>(1);
   const [desserts, setDesserts] = useState(null);
-  const [orders, setOrders] = useState<Partial<IItem[]> | null>()
+  const [orders, setOrders] = useState<Partial<IItem>[]>([]);
   const [totalPages, setTotalPages] = useState<number>(1);
   const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [cartOrders, setCartOrders] = useState<CartOrderSummary | null>(null);
 
   const nextPageHandler = () => setPage(page + 1);
   const prevPageHandler = () => setPage(page - 1);
@@ -27,19 +28,52 @@ export const App: React.FC = () => {
       setIsLoading(true);
       const response: AxiosResponse | undefined = await getAll({ page });
       if (response?.data) {
-        setDesserts(response.data.data); 
+        setDesserts(response.data.data);
         setTotalPages(response.data.pages);
       }
-      setIsLoading(false); 
+      setIsLoading(false);
     };
-
     fetchDesserts();
   }, [page]);
 
-
-  const handleOrder = (id:number, name:string, price:number) => {
+  const handleOrder = (id: number, name: string, price: number) => {
     setOrders((prev) => [...prev, { id, name, price }]);
   };
+
+  useEffect(() => {
+    const handleCartOrders = () => {
+      const summary = orders.reduce((acc, item) => {
+        if (!item.name || item.price === undefined) return acc;
+
+        if (!acc[item.name]) {
+          acc[item.name] = {
+            name: item.name,
+            quantity: 0,
+            total: 0,
+          };
+        }
+
+        acc[item.name].quantity += 1;
+        acc[item.name].total += Number(item.price);
+
+        return acc;
+      }, {} as Record<string, { name: string; quantity: number; total: number }>);
+
+      const result = Object.values(summary).map((item) => ({
+        ...item,
+        total: item.total.toFixed(2),
+      }));
+
+      const totalResult = result.reduce(
+        (acc, { total }) => acc + Number(total),
+        0
+      );
+
+      setCartOrders({ result, totalResult });
+    };
+
+    handleCartOrders();
+  }, [orders]);
 
   return (
     <SC.AppStyled>
@@ -48,13 +82,16 @@ export const App: React.FC = () => {
       </Header>
       <SharedLayout>
         {isLoading && <Loading />}
-        {desserts && <List desserts={desserts} handleOrder={handleOrder}/>}
-        {!isLoading && <PaginationDashboard
-          next={nextPageHandler}
-          prev={prevPageHandler}
-          page={page}
-        />}
-       {!isLoading && <Cart orders={orders}/>}
+        {desserts && <List desserts={desserts} handleOrder={handleOrder} />}
+        {!isLoading && (
+          <PaginationDashboard
+            next={nextPageHandler}
+            prev={prevPageHandler}
+            page={page}
+            totalPages={totalPages}
+          />
+        )}
+        {!isLoading && <Cart cartOrders={cartOrders} />}
       </SharedLayout>
     </SC.AppStyled>
   );

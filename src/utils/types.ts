@@ -18,6 +18,7 @@ export interface IPagination {
     next:()=>void,
     prev:()=>void,
     page:number,
+    totalPages:number,
 }
 
 export interface IFetchDesserts {
@@ -26,4 +27,26 @@ export interface IFetchDesserts {
 
 export interface ICart {
   orders: Partial<IItem>[] | null;
+}
+
+export interface CartOrderSummary  {
+  result: {
+    name: string;
+    quantity: number;
+    total: string;
+  }[];
+  totalResult: number;
+};
+
+export interface CartOrderItem {
+  name: string;
+  quantity: number;
+  total: string; 
+}
+
+export interface ICartProps {
+  cartOrders: {
+    result: CartOrderItem[];
+    totalResult: number;
+  } | null;
 }

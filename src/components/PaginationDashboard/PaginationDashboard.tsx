@@ -3,11 +3,12 @@ import * as SC from "./PaginationDashboardStyled"
 
 
 
-const PaginationDashboard:React.FC<IPagination> = ({next, prev, page}) => {
+const PaginationDashboard:React.FC<IPagination> = ({next, prev, page, totalPages}) => {
+    
     return ( 
         <SC.PaginationDashboardCon>
             <button type="button" onClick={prev} disabled={page === 1 ? true : false}>Prev</button>
-            <button type="button" onClick={next}>Next</button>
+            <button type="button" onClick={next} disabled={page === totalPages ? true : false}>Next</button>
         </SC.PaginationDashboardCon>
      );
 }
