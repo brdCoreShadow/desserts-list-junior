@@ -4,7 +4,7 @@ import carbonPic from "../../assets/images/icon-carbon-neutral.svg";
 
 import { CartOrderItem, ICartProps } from "@/utils/types";
 
-const Cart: React.FC<ICartProps> = ({ cartOrders, handleDelete }) => {
+const Cart: React.FC<Partial <ICartProps>> = ({ cartOrders, handleDelete, openShare }) => {
   let result: CartOrderItem[] = [];
   let totalResult;
 
@@ -18,11 +18,9 @@ const deleteItem = (e: React.MouseEvent<HTMLButtonElement>) => {
   const currentValue = e.currentTarget.getAttribute("data-name");
   console.log(currentValue);
   if (currentValue) {
-    handleDelete(currentValue);
+    handleDelete!(currentValue);
   }
 };
-
-  console.log(result);
 
   return (
     <SC.CartCont>
@@ -56,7 +54,7 @@ const deleteItem = (e: React.MouseEvent<HTMLButtonElement>) => {
             <img src={carbonPic} alt="carbon_neutral" />
             <p>This is a carbon-neutral delivery</p>
           </SC.CarbonCon>
-          <SC.ConfirmBtn>Confirm Order</SC.ConfirmBtn>
+          <SC.ConfirmBtn onClick={openShare}>Confirm Order</SC.ConfirmBtn>
         </div>
       ) : (
         <>

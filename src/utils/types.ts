@@ -12,7 +12,12 @@ export interface IItem {
 }
 
 export interface ItemProps extends Partial<IItem> {
-  handleOrder?: (id: number, name: string, price: number, image_url:string) => void;
+  handleOrder?: (
+    id: number,
+    name: string,
+    price: number,
+    image_url: string
+  ) => void;
 }
 export interface IPagination {
   next: () => void;
@@ -43,7 +48,6 @@ export interface CartOrderItem {
   name: string;
   quantity: number;
   pic: string;
-
   total: string;
 }
 
@@ -53,4 +57,7 @@ export interface ICartProps {
     totalResult: number;
   } | null;
   handleDelete: (name: string) => void;
+  openShare: () => void;
+  closeShare: () => void;
+  isShare: boolean;
 }

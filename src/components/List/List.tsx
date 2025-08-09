@@ -4,7 +4,7 @@ import { IItem } from "@/utils/types";
 
 interface ListProps {
   desserts: IItem[] | null;
-  handleOrder:(id:number, name:string, price:number)=>void;
+  handleOrder:(id:number, name:string, price:number, image_url:string)=>void;
 }
 
 const List: React.FC<ListProps> = ({desserts, handleOrder}) => {

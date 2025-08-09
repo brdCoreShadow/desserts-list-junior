@@ -13,6 +13,7 @@ import Cart from "./components/Cart/Cart";
 import { CartOrderSummary, IItem } from "./utils/types";
 import ConfirmWindow from "./components/ConfirmWindow/ConfirmWindow";
 import Portal from "./components/Portal/Portal";
+import { useToggle } from "./hooks/useShare";
 
 export const App: React.FC = () => {
   const [page, setPage] = useState<number>(1);
@@ -21,6 +22,8 @@ export const App: React.FC = () => {
   const [totalPages, setTotalPages] = useState<number>(1);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [cartOrders, setCartOrders] = useState<CartOrderSummary | null>(null);
+
+  const { isShare, openShare, closeShare } = useToggle();
 
   const nextPageHandler = () => setPage(page + 1);
   const prevPageHandler = () => setPage(page - 1);
@@ -38,21 +41,34 @@ export const App: React.FC = () => {
     fetchDesserts();
   }, [page]);
 
-  const handleOrder = (id: number, name: string, price: number, image_url:string) => {
+  const handleOrder = (
+    id: number,
+    name: string,
+    price: number,
+    image_url: string
+  ) => {
     setOrders((prev) => [...prev, { id, name, price, image_url }]);
   };
 
+const handleSubmit = () => {
+  
+  setOrders([]);
+  setCartOrders(null);
+
+  
+  closeShare();
+};
+
+
   useEffect(() => {
     const handleCartOrders = () => {
-      console.log(orders);
-      
       const summary = orders.reduce((acc, item) => {
         if (!item.name || item.price === undefined) return acc;
 
         if (!acc[item.name]) {
           acc[item.name] = {
             name: item.name,
-            pic: item.image_url,
+            pic: item.image_url ?? "",
             quantity: 0,
             total: 0,
           };
@@ -62,7 +78,7 @@ export const App: React.FC = () => {
         acc[item.name].total += Number(item.price);
 
         return acc;
-      }, {} as Record<string, { name: string; quantity: number; total: number }>);
+      }, {} as Record<string, { name: string; quantity: number; total: number; pic: string }>);
 
       const result = Object.values(summary).map((item) => ({
         ...item,
@@ -97,9 +113,6 @@ export const App: React.FC = () => {
 
   return (
     <SC.AppStyled>
-      <Portal>
-        <ConfirmWindow cartOrders={cartOrders} />
-      </Portal>
       <Header>
         <Title />
       </Header>
@@ -115,9 +128,22 @@ export const App: React.FC = () => {
           />
         )}
         {!isLoading && (
-          <Cart cartOrders={cartOrders} handleDelete={handleDelete} />
+          <Cart
+            cartOrders={cartOrders}
+            handleDelete={handleDelete}
+            openShare={openShare}
+          />
         )}
       </SharedLayout>
+      {isShare && (
+        <Portal>
+          <ConfirmWindow
+            cartOrders={cartOrders}
+            isShare={isShare}
+            closeShare={handleSubmit}
+          />
+        </Portal>
+      )}
     </SC.AppStyled>
   );
 };
