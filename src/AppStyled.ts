@@ -9,5 +9,7 @@ background-color: #FCF8F6;
     max-width: 1280px;
     margin-left: auto;
     margin-right: auto;
+
+    align-content: center;
 }
 `
