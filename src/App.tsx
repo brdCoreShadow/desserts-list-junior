@@ -75,6 +75,19 @@ export const App: React.FC = () => {
     handleCartOrders();
   }, [orders]);
 
+
+const handleDelete = (name: string) => {
+  if (!cartOrders) return;
+
+  const filteredResult = cartOrders.result.filter(el => el.name !== name);
+  const newTotal = filteredResult.reduce((acc, el) => acc + Number(el.total), 0);
+
+  setCartOrders({
+    result: filteredResult,
+    totalResult: newTotal,
+  });
+};
+
   return (
     <SC.AppStyled>
       <Header>
@@ -91,7 +104,7 @@ export const App: React.FC = () => {
             totalPages={totalPages}
           />
         )}
-        {!isLoading && <Cart cartOrders={cartOrders} />}
+        {!isLoading && <Cart cartOrders={cartOrders} handleDelete={handleDelete}/>}
       </SharedLayout>
     </SC.AppStyled>
   );

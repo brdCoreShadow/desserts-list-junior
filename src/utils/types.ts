@@ -49,4 +49,5 @@ export interface ICartProps {
     result: CartOrderItem[];
     totalResult: number;
   } | null;
+  handleDelete:(name:string)=>void;
 }
