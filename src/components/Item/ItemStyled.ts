@@ -3,6 +3,10 @@ import styled from "@emotion/styled";
 export const ItemStyled = styled.li`
   &:not(:last-of-type) {
     margin-bottom: 24px;
+
+    @media (min-width: 768px){
+      margin-bottom: 0;
+    }
   }
 `;
 
@@ -13,8 +17,19 @@ export const PicThumb = styled.div`
 
   & > img {
     width: 327px;
+    height: 212px;
 
     border-radius: 8px;
+
+    @media (min-width: 768px){
+      width: 214px;
+      height: 212px;
+    }
+
+    @media (min-width: 1280px){
+      width: 250px;
+      height: 240px;
+    }
   }
 `;
 
@@ -42,6 +57,14 @@ export const Button = styled.button`
 
   border: 1px solid #AD8A85;
   border-radius: 36px;
+
+  @media (min-width: 768px){
+    transform: translate(15%, 50%);
+  }
+
+  @media (min-width: 1280px){
+    transform: translate(25%, 50%);
+  }
 
   &::before {
     position: absolute;
