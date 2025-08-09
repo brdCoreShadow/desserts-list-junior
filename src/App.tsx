@@ -11,6 +11,8 @@ import { AxiosResponse } from "axios";
 import Loading from "./components/Loading/Loading";
 import Cart from "./components/Cart/Cart";
 import { CartOrderSummary, IItem } from "./utils/types";
+import ConfirmWindow from "./components/ConfirmWindow/ConfirmWindow";
+import Portal from "./components/Portal/Portal";
 
 export const App: React.FC = () => {
   const [page, setPage] = useState<number>(1);
@@ -36,18 +38,21 @@ export const App: React.FC = () => {
     fetchDesserts();
   }, [page]);
 
-  const handleOrder = (id: number, name: string, price: number) => {
-    setOrders((prev) => [...prev, { id, name, price }]);
+  const handleOrder = (id: number, name: string, price: number, image_url:string) => {
+    setOrders((prev) => [...prev, { id, name, price, image_url }]);
   };
 
   useEffect(() => {
     const handleCartOrders = () => {
+      console.log(orders);
+      
       const summary = orders.reduce((acc, item) => {
         if (!item.name || item.price === undefined) return acc;
 
         if (!acc[item.name]) {
           acc[item.name] = {
             name: item.name,
+            pic: item.image_url,
             quantity: 0,
             total: 0,
           };
@@ -75,21 +80,26 @@ export const App: React.FC = () => {
     handleCartOrders();
   }, [orders]);
 
+  const handleDelete = (name: string) => {
+    if (!cartOrders) return;
 
-const handleDelete = (name: string) => {
-  if (!cartOrders) return;
+    const filteredResult = cartOrders.result.filter((el) => el.name !== name);
+    const newTotal = filteredResult.reduce(
+      (acc, el) => acc + Number(el.total),
+      0
+    );
 
-  const filteredResult = cartOrders.result.filter(el => el.name !== name);
-  const newTotal = filteredResult.reduce((acc, el) => acc + Number(el.total), 0);
-
-  setCartOrders({
-    result: filteredResult,
-    totalResult: newTotal,
-  });
-};
+    setCartOrders({
+      result: filteredResult,
+      totalResult: newTotal,
+    });
+  };
 
   return (
     <SC.AppStyled>
+      <Portal>
+        <ConfirmWindow cartOrders={cartOrders} />
+      </Portal>
       <Header>
         <Title />
       </Header>
@@ -104,7 +114,9 @@ const handleDelete = (name: string) => {
             totalPages={totalPages}
           />
         )}
-        {!isLoading && <Cart cartOrders={cartOrders} handleDelete={handleDelete}/>}
+        {!isLoading && (
+          <Cart cartOrders={cartOrders} handleDelete={handleDelete} />
+        )}
       </SharedLayout>
     </SC.AppStyled>
   );

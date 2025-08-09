@@ -8,6 +8,7 @@ const Cart: React.FC<ICartProps> = ({ cartOrders, handleDelete }) => {
   let result: CartOrderItem[] = [];
   let totalResult;
 
+
   if (cartOrders) {
     result = cartOrders.result;
     totalResult = cartOrders.totalResult.toFixed(2);

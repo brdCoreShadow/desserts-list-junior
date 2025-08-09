@@ -1,47 +1,50 @@
 export interface IChild {
-    children: React.ReactNode
+  children: React.ReactNode;
 }
 
 export interface IItem {
-    id:number,
-    dessert_id:number,
-    name:string,
-    category:string,
-    price:number,
-    image_url:string,
+  id: number;
+  dessert_id: number;
+  name: string;
+  category: string;
+  price: number;
+  image_url: string;
 }
 
 export interface ItemProps extends Partial<IItem> {
-  handleOrder?: (id: number, name: string, price: number) => void;
+  handleOrder?: (id: number, name: string, price: number, image_url:string) => void;
 }
 export interface IPagination {
-    next:()=>void,
-    prev:()=>void,
-    page:number,
-    totalPages:number,
+  next: () => void;
+  prev: () => void;
+  page: number;
+  totalPages: number;
 }
 
 export interface IFetchDesserts {
- page:number,
+  page: number;
 }
 
 export interface ICart {
   orders: Partial<IItem>[] | null;
 }
 
-export interface CartOrderSummary  {
+export interface CartOrderSummary {
   result: {
     name: string;
+    pic: string;
     quantity: number;
     total: string;
   }[];
   totalResult: number;
-};
+}
 
 export interface CartOrderItem {
   name: string;
   quantity: number;
-  total: string; 
+  pic: string;
+
+  total: string;
 }
 
 export interface ICartProps {
@@ -49,5 +52,5 @@ export interface ICartProps {
     result: CartOrderItem[];
     totalResult: number;
   } | null;
-  handleDelete:(name:string)=>void;
+  handleDelete: (name: string) => void;
 }

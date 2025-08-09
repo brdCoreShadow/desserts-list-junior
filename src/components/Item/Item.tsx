@@ -7,8 +7,8 @@ const Item: React.FC<Partial<ItemProps>> = ({id, name, category, image_url, pric
     typeof price === "number" ? price.toFixed(2) : Number(price).toFixed(2);
   
 const addToCart = () => {
- if (id !== undefined && name && price !== undefined && handleOrder) {
-      handleOrder(id, name, price);
+ if (id !== undefined && name && price !== undefined && image_url !== undefined && handleOrder) {
+      handleOrder(id, name, price, image_url);
     }
 }
 
