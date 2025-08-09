@@ -1,15 +1,22 @@
-import { IItem } from "@/utils/types";
+import { ItemProps } from "@/utils/types";
 import * as SC from "./ItemStyled";
 
-const Item: React.FC<IItem> = ({ name, category, imageUrl, price }) => {
+const Item: React.FC<Partial<ItemProps>> = ({id, name, category, image_url, price, handleOrder }) => {
   
-  const formattedPrice = price.toFixed(2);
+  const formattedPrice =
+    typeof price === "number" ? price.toFixed(2) : Number(price).toFixed(2);
   
+const addToCart = () => {
+ if (id !== undefined && name && price !== undefined && image_url !== undefined && handleOrder) {
+      handleOrder(id, name, price, image_url);
+    }
+}
+
     return (
-    <SC.ItemStyled>
+    <SC.ItemStyled >
       <SC.PicThumb>
-        <img src={imageUrl} alt={name} />
-      <SC.Button>Add to Cart</SC.Button>
+        <img src={image_url} alt={name} />
+      <SC.Button onClick={addToCart}>Add to Cart</SC.Button>
       </SC.PicThumb>
       <div>
         <SC.Category>{category}</SC.Category>

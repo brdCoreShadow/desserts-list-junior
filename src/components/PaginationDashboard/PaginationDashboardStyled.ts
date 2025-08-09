@@ -6,6 +6,8 @@ export const PaginationDashboardCon = styled.div`
   align-items: center;
   justify-content: center;
 
+  margin-bottom: 24px;
+
   & > button {
     width: 80px;
 
